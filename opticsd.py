@@ -94,6 +94,12 @@ class Optics():
 
 def main():
 
+    try:
+        config.load_config()
+    except Exception, e:
+        print "failed to load logfile. %s" % e
+        exit(1)
+
     logger = logging.getLogger('log')
     logger.setLevel(config.get('log-level').upper())
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
@@ -101,11 +107,6 @@ def main():
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
-    try:
-        config.load_config()
-    except Exception, e:
-        logger.error(e)
-        exit(1)
 
     try:
         f = open(config.get("hostfile"))
@@ -116,9 +117,9 @@ def main():
                 exit(1)
             if hosts[-1] == '':
                 hosts = hosts[:-1]
+            f.close()
         except IOError, e:
             logger.error(e)
-        finally:
             f.close()
             exit(1)
     except IOError, e:
