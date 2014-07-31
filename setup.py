@@ -10,7 +10,7 @@ setup(name='opticsd',
       url='http://github.com/edgar-v/opticsd.git',
       py_modules=['opticsd', 'collect', 'config'],
       scripts=['opticsd'],
-      data_files=[('/etc/opticsd/', ['opticsd.conf', 'README.md']),
+      data_files=[('/etc/opticsd/', ['opticsd.conf', 'hosts.txt', 'README.md']),
                   ('/var/log/opticsd/', ['error.log']),
                   ('/var/run/opticsd/', ['opticsd.pid'])],
 )

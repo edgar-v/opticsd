@@ -101,6 +101,9 @@ try:
     f = open(config.get("hostfile"))
     try:
         hosts = f.read().split("\n")
+        if len(hosts) == 0:
+            print >> stderr, 'hostfile empty'
+            exit(1)
         if hosts[-1] == '':
             hosts = hosts[:-1]
     except IOError, e:
