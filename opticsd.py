@@ -103,17 +103,14 @@ try:
         hosts = f.read().split("\n")
         if len(hosts) == 0:
             print >> stderr, 'hostfile empty'
-            exit(1)
         if hosts[-1] == '':
             hosts = hosts[:-1]
     except IOError, e:
         print >> stderr, e
     finally:
         f.close()
-        exit(1)
 except IOError, e:
     print >> stderr, e
-    exit(1)
 
 optics = Optics()
 logger = logging.getLogger('log')
