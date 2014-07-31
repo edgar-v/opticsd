@@ -7,4 +7,10 @@ setup(name='opticsd',
       description='Python optical data collector',
       author='Edgar Vedvik',
       author_email='edgarmv@uninett.no',
-      url='
+      url='http://github.com/edgar-v/opticsd.git',
+      py_modules=['opticsd', 'collect', 'config'],
+      scripts=['optics'],
+      data_files=[('/etc/opticsd/', ['opticsd.conf', 'README.md']),
+                  ('/var/log/opticsd/', ['error.log']),
+                  ('/var/run/opticsd/', ['opticsd.pid'])],
+)
