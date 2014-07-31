@@ -48,9 +48,7 @@ def load_config():
         print >> stderr, 'No config file found /etc/opticsd/opticsd.conf'
         exit(1)
 
-    options = parser.items('Optics')
-    options.extend(parser.items('Graphite'))
-    options.extend(parser.items('snmp'))
+    options = parser.items('opticsd')
 
     for i in options:
         if i[0] in Config.items:
