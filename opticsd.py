@@ -93,7 +93,7 @@ class Optics():
             logger.error('sock.sendall() exception: %s' % e)
 
 
-if __name__ == '__main__':
+def main():
     try:
         config.load_config()
     except Exception, e:
@@ -127,3 +127,7 @@ if __name__ == '__main__':
     daemon_runner = runner.DaemonRunner(optics)
     daemon_runner.daemon_context.files_preserve = [handler.stream]
     daemon_runner.do_action()
+
+
+if __name__ == '__main__':
+    main()
