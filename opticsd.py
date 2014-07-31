@@ -23,7 +23,7 @@ class Optics():
         self.stdin_path = '/dev/null'
         self.stdout_path = '/dev/tty'
         self.stderr_path = '/dev/tty'
-        self.pidfile_path = config.get('PidFile')
+        self.pidfile_path = config.get('pidfile')
         self.pidfile_timeout = 5
         self.work_queue = Queue.Queue()
 
@@ -32,23 +32,23 @@ class Optics():
             global sock
             sock = socket.socket()
             sock.connect((
-                config.get("GraphiteServer"),
-                config.get("GraphitePort")
+                config.get("graphite-server"),
+                config.get("graphite-port")
                 ))
-            if config.get("ThresholdInterval") != 0:
-                self.count = (self.count + 1) % config.get("ThresholdInterval")
+            if config.get("threshold-interval") != 0:
+                self.count = (self.count + 1) % config.get("threshold-interval")
                 self.threshold_run = True if self.count == 0 else False
 
             for host in hosts:
                 self.work_queue.put(host)
-            for i in range(min(config.get('MaxThreads'), len(hosts))):
+            for i in range(min(config.get('max-threads'), len(hosts))):
                 thread = threading.Thread(target=self.start_collect)
                 thread.daemon = False
                 thread.start()
             self.work_queue.join()
             sock.shutdown(socket.SHUT_WR)
             sock.close()
-            sleep(config.get('SleepDuration'))
+            sleep(config.get('sleep-duration'))
 
     def start_collect(self):
         while not self.work_queue.empty():
@@ -65,7 +65,7 @@ class Optics():
         lines = []
 
         for opt in opt_data:
-            path = config.get('GraphitePath')
+            path = config.get('graphite-path')
             if path.find('\d') != -1:
                 opt.alias = opt.alias.split(',')
                 if len(opt.alias) < 2:
@@ -98,7 +98,7 @@ except Exception, e:
     exit(1)
 
 try:
-    f = open(config.get("Hostfile"))
+    f = open(config.get("hostfile"))
     try:
         hosts = f.read().split("\n")
         if hosts[-1] == '':
@@ -113,9 +113,9 @@ except IOError, e:
 
 optics = Optics()
 logger = logging.getLogger('log')
-logger.setLevel(config.get('Loglevel').upper())
+logger.setLevel(config.get('log-level').upper())
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-handler = logging.FileHandler(config.get("LogFile"))
+handler = logging.FileHandler(config.get("logfile"))
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 

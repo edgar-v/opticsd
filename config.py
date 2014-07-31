@@ -5,23 +5,23 @@ class Config():
 
     """Contains all configuration variables"""
     items = {
-        'LogFile': 'error.log',
-        'Loglevel': 'Error',
-        'Hostfile': 'hosts.txt',
-        'PidFile': '/var/run/opticsd.pid',
-        'User': '',
-        'Password': '',
-        'GraphiteServer': '',
-        'GraphitePort': '',
-        'GraphitePath': 'optics.\h.\i',
-        'SleepDuration': 300,
-        'ThresholdInterval': 50,
-        'Version': 2,
-        'Community': 'public',
-        'Retries': 3,
-        'Timeout': 500000,
-        'MaxThreads': 4,
-        'ThresholdRun': False
+        'logfile': '/var/log/opticsd/error.log',
+        'log-level': 'Error',
+        'pidfile': '/var/run/opticsd/opticsd.pid',
+        'hostfile': 'etc/opticsd/hosts.txt',
+        'max-threads': 4,
+        'sleep-duration': 60,
+        'threshold-interval': 50,
+        'use-ssh': 1,
+        'ssh-username': '',
+        'ssh-password': '',
+        'graphite-server': '',
+        'graphite-port': '',
+        'graphite-path': 'optics.\h.\i',
+        'snmp-version': 2,
+        'snmp-community': 'public',
+        'snmp-retries': 5,
+        'snmp-timeout': 1,
         }
 
 

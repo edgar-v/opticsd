@@ -55,10 +55,10 @@ class Collect():
     def __init__(self, host, threshold_run):
         self.session = netsnmp.Session(
             DestHost=host,
-            Version=config.get("Version"),
-            Community=config.get("Community"),
-            Retries=config.get("Retries"),
-            Timeout=config.get("Timeout"))
+            Version=config.get("snmp-version"),
+            Community=config.get("snmp-community"),
+            Retries=config.get("snmp-retries"),
+            Timeout=config.get("snmp-timeout"))
         self.host = host
         global logger
         logger = logging.getLogger('log')
@@ -69,7 +69,9 @@ class Collect():
         result = getattr(self, host_type + '_snmp')()
         if result:
             return result
-        return getattr(self, host_type + '_ssh')()
+        elif config.get("use-ssh") == 1:
+            return getattr(self, host_type + '_ssh')()
+        return None
 
     def get_host_type(self):
         try:
@@ -316,8 +318,8 @@ class Collect():
         return data
 
     def ssh(self, cmd):
-        with settings(host_string=self.host, user=config.get('User'),
-                      password=config.get('Password').decode('base64'), warn_only=True,
+        with settings(host_string=self.host, user=config.get('ssh-username'),
+                      password=config.get('ssh-password').decode('base64'), warn_only=True,
                       abort_on_prompts=True, timeout=2):
             with hide('everything'):
                 try:
