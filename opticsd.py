@@ -94,10 +94,18 @@ class Optics():
 
 
 def main():
+
+    logger = logging.getLogger('log')
+    logger.setLevel(config.get('log-level').upper())
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    handler = logging.FileHandler(config.get("logfile"))
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
     try:
         config.load_config()
     except Exception, e:
-        print e
+        logger.error(e)
         exit(1)
 
     try:
@@ -105,26 +113,20 @@ def main():
         try:
             hosts = f.read().split("\n")
             if len(hosts) == 0:
-                print 'hostfile empty'
+                logger.error("host file empty")
                 exit(1)
             if hosts[-1] == '':
                 hosts = hosts[:-1]
         except IOError, e:
-            print e
+            logger.error(e)
         finally:
             f.close()
             exit(1)
     except IOError, e:
-        print e
+        logger.error(e)
         exit(1)
 
     optics = Optics()
-    logger = logging.getLogger('log')
-    logger.setLevel(config.get('log-level').upper())
-    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-    handler = logging.FileHandler(config.get("logfile"))
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
 
 
     daemon_runner = runner.DaemonRunner(optics)
