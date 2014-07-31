@@ -13,6 +13,7 @@ from time import sleep
 
 hosts = []
 sock = None
+logger = None
 
 
 class Optics():
@@ -91,36 +92,38 @@ class Optics():
         except Exception, e:
             logger.error('sock.sendall() exception: %s' % e)
 
-try:
-    config.load_config()
-except Exception, e:
-    print >> stderr, e
-    exit(1)
 
-try:
-    f = open(config.get("hostfile"))
+if __name__ == '__main__':
     try:
-        hosts = f.read().split("\n")
-        if len(hosts) == 0:
-            print >> stderr, 'hostfile empty'
-        if hosts[-1] == '':
-            hosts = hosts[:-1]
+        config.load_config()
+    except Exception, e:
+        print >> stderr, e
+        exit(1)
+
+    try:
+        f = open(config.get("hostfile"))
+        try:
+            hosts = f.read().split("\n")
+            if len(hosts) == 0:
+                print >> stderr, 'hostfile empty'
+            if hosts[-1] == '':
+                hosts = hosts[:-1]
+        except IOError, e:
+            print >> stderr, e
+        finally:
+            f.close()
     except IOError, e:
         print >> stderr, e
-    finally:
-        f.close()
-except IOError, e:
-    print >> stderr, e
 
-optics = Optics()
-logger = logging.getLogger('log')
-logger.setLevel(config.get('log-level').upper())
-formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-handler = logging.FileHandler(config.get("logfile"))
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+    optics = Optics()
+    logger = logging.getLogger('log')
+    logger.setLevel(config.get('log-level').upper())
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    handler = logging.FileHandler(config.get("logfile"))
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
 
 
-daemon_runner = runner.DaemonRunner(optics)
-daemon_runner.daemon_context.files_preserve = [handler.stream]
-daemon_runner.do_action()
+    daemon_runner = runner.DaemonRunner(optics)
+    daemon_runner.daemon_context.files_preserve = [handler.stream]
+    daemon_runner.do_action()
