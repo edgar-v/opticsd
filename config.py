@@ -1,4 +1,5 @@
 import ConfigParser
+from sys import stderr
 
 
 class Config():
@@ -42,7 +43,10 @@ def set_var(key, value):
 def load_config():
     parser = ConfigParser.RawConfigParser()
     parser.optionxform = str
-    parser.read('optics.conf')
+    filenames = parser.read('optics.conf')
+    if len(filenames) == 0:
+        print >> stderr, 'No config file found /etc/opticsd/opticsd.conf'
+        exit(1)
 
     options = parser.items('Optics')
     options.extend(parser.items('Graphite'))
