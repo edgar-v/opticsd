@@ -107,9 +107,10 @@ try:
         print >> stderr, e
     finally:
         f.close()
+        exit(1)
 except IOError, e:
     print >> stderr, e
-
+    exit(1)
 
 optics = Optics()
 logger = logging.getLogger('log')

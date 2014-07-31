@@ -43,7 +43,7 @@ def set_var(key, value):
 def load_config():
     parser = ConfigParser.RawConfigParser()
     parser.optionxform = str
-    filenames = parser.read('optics.conf')
+    filenames = parser.read('/etc/opticsd/opticsd.conf')
     if len(filenames) == 0:
         print >> stderr, 'No config file found /etc/opticsd/opticsd.conf'
         exit(1)
