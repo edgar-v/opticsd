@@ -7,7 +7,6 @@ import threading
 from collect import Collect
 import logging
 from time import time
-from sys import stderr
 from daemon import runner
 from time import sleep
 
@@ -112,7 +111,7 @@ def main():
         f = open(config.get("hostfile"))
         try:
             hosts = f.read().split("\n")
-            if len(hosts) == 0:
+            if len(hosts) == 1 and hosts[0] == '':
                 logger.error("host file empty")
                 exit(1)
             if hosts[-1] == '':
