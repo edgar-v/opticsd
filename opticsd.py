@@ -39,7 +39,6 @@ class Optics():
                 self.count = (self.count + 1) % config.get("threshold-interval")
                 self.threshold_run = True if self.count == 0 else False
 
-            logger.error(hosts)
 
             for host in hosts:
                 self.work_queue.put(host)
