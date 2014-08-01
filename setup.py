@@ -12,5 +12,6 @@ setup(name='opticsd',
       scripts=['opticsd'],
       data_files=[('/etc/opticsd/', ['opticsd.conf', 'hosts.txt', 'README.md']),
                   ('/var/log/opticsd/', ['error.log']),
-                  ('/var/run/opticsd/', ['opticsd.pid'])],
+                  ('/var/run/opticsd/', ['opticsd.pid'])
+                  ('/usr/local/share/snmp/mibs/', ['CISCO-ENTITY-SENSOR-MIB.my'])],
 )
