@@ -8,13 +8,19 @@ opticsd is a python daemon that can collect optical data such as rx/tx output po
 Install git, libsnmp-base, snmp-mibs-downloader, python-netsnmp
 - apt-get install git libsnmp-base snmp-mibs-downloader python-netsnmp
 
+Download the CISCO-ENTITY-SENSOR-MIB, and move it to /usr/local/share/snmp/mibs/
+- wget ftp://ftp.cisco.com/pub/mibs/v2/CISCO-ENTITY-SENSOR-MIB.my
+- mv CISCO-ENTITY-SENSOR-MIB.my /usr/local/share/snmp/mibs/
+
+Add the new MIB to your net-snmp config file
+- sudo echo mibs +CISCO-ENTITY-SENSOR-MIB | sudo tee -a /etc/snmp/snmp.conf
+
 The daemon can then be started with:
 - python opticsd.py start
 
 And stopped with
 - python opticsd.py stop
 
-...
 
 # opticsd.conf
 
@@ -66,11 +72,11 @@ snmp-version = 2
 snmp-community = public
 - The community that your hosts have
 
-snmp-retries = 5
+snmp-retries = 3
 - The number of retries that snmp will do
 
 snmp-timeout = 1
-- the time (in seconds) to wait for a response
+- the time (in microseconds) to wait for a response
 
 
 # opticsd.py

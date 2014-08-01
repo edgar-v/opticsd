@@ -21,8 +21,8 @@ class Config():
         'graphite-path': 'optics.\h.\i',
         'snmp-version': 2,
         'snmp-community': 'public',
-        'snmp-retries': 5,
-        'snmp-timeout': 1,
+        'snmp-retries': 3,
+        'snmp-timeout': 1000000,
         }
 
 

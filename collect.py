@@ -178,6 +178,7 @@ class Collect():
         alias_vars = netsnmp.VarList()
         name_vars = netsnmp.VarList()
 
+
         for opt in opt_data:
             alias_vars.append(netsnmp.Varbind('ifAlias.%s' % opt.if_id))
             name_vars.append(netsnmp.Varbind('ifName.%s' % opt.if_id))

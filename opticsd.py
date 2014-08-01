@@ -12,7 +12,7 @@ from time import sleep
 
 hosts = []
 sock = None
-logger = None
+logger = logging.getLogger('log')
 
 
 class Optics():
@@ -39,6 +39,8 @@ class Optics():
                 self.count = (self.count + 1) % config.get("threshold-interval")
                 self.threshold_run = True if self.count == 0 else False
 
+            logger.error(hosts)
+
             for host in hosts:
                 self.work_queue.put(host)
             for i in range(min(config.get('max-threads'), len(hosts))):
@@ -57,6 +59,8 @@ class Optics():
             data = collector.collect()
             if data:
                 self.write(data, host)
+            else:
+                logger.debug("No data for %s" % host)
             self.work_queue.task_done()
 
     def write(self, opt_data, host):
@@ -88,6 +92,7 @@ class Optics():
         data = '\n'.join(lines) + '\n'
         try:
             sock.sendall(data)
+            logger.debug("Data sendt to graphite server for host %s" % host)
         except Exception, e:
             logger.error('sock.sendall() exception: %s' % e)
 
@@ -111,6 +116,7 @@ def main():
     try:
         f = open(config.get("hostfile"))
         try:
+            global hosts
             hosts = f.read().split("\n")
             if len(hosts) == 1 and hosts[0] == '':
                 logger.error("host file empty")
