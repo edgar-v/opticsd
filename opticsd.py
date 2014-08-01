@@ -21,8 +21,8 @@ class Optics():
         self.count = -1
         self.threshold_run = False
         self.stdin_path = '/dev/null'
-        self.stdout_path = '/dev/tty'
-        self.stderr_path = '/dev/tty'
+        self.stdout_path = '/dev/null'
+        self.stderr_path = '/dev/null'
         self.pidfile_path = config.get('pidfile')
         self.pidfile_timeout = 5
         self.work_queue = Queue.Queue()
@@ -137,6 +137,7 @@ def main():
     daemon_runner = runner.DaemonRunner(optics)
     daemon_runner.daemon_context.files_preserve = [handler.stream]
     daemon_runner.do_action()
+    
 
 
 if __name__ == '__main__':
